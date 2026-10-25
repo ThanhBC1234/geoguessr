@@ -37,23 +37,26 @@ npm test         # chạy unit test
 npm run build    # bản build tĩnh trong thư mục dist/
 ```
 
-Khi chạy `npm run dev` sẽ có thêm nguồn ảnh **Giả lập (dev)** để thử giao diện mà không cần key.
+Nguồn ảnh **Dùng thử (không cần key)** chỉ để xem giao diện và luồng chơi, ảnh đường phố được thay bằng nền vẽ.
 
 ## Đưa lên GitHub Pages
 
-Workflow `.github/workflows/deploy.yml` tự build và đăng game mỗi lần push. Chỉ cần bật một lần:
+Bản build của game (`index.html`, `assets/`, `favicon.svg` ở gốc repo) được workflow
+`.github/workflows/deploy.yml` tạo lại và commit sau mỗi lần push, nên **Settings → Pages**
+chọn kiểu nào cũng chạy:
 
-1. Vào **Settings → Pages** của repo.
-2. Ở **Build and deployment → Source**, chọn **GitHub Actions** (không chọn *Deploy from a branch*:
-   cách đó đăng thẳng mã nguồn chưa build nên trang sẽ trắng).
-3. Vào tab **Actions**, mở workflow *Deploy to GitHub Pages* → **Run workflow** (hoặc push một commit mới).
+- *Deploy from a branch* → branch này, thư mục `/ (root)`.
+- *GitHub Actions* → workflow tự đăng thư mục `dist/`.
 
 Game sẽ có ở `https://<tên-tài-khoản>.github.io/<tên-repo>/`.
+Mã nguồn nằm trong `src/`; đừng sửa tay `index.html` và `assets/` ở gốc, chúng được tạo tự động
+(`npm run build:pages`).
 
 ## Cấu trúc
 
 ```
 src/
+  index.html   trang gốc của Vite
   game/        tính khoảng cách, điểm, danh sách vùng
   providers/   Google Street View, Mapillary, nguồn giả lập (chỉ khi dev)
   components/  giao diện: trang chủ, màn chơi, bản đồ, kết quả

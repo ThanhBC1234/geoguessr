@@ -2,8 +2,8 @@ import type { GameLocation } from "../game/types";
 import type { StreetProvider, ViewerHandle } from "./types";
 
 /**
- * Development-only provider: fixed places and a drawn "panorama",
- * so the UI can be exercised without API keys or network access.
+ * Trial provider: fixed places and a drawn "panorama", so the game can be
+ * tried without API keys or network access.
  */
 const PLACES: GameLocation[] = [
   { position: { lat: 48.8584, lng: 2.2945 }, panoId: "paris", heading: 30 },
@@ -27,7 +27,7 @@ export function createMockProvider(): StreetProvider {
       el.style.cssText =
         "position:absolute;inset:0;display:grid;place-items:center;color:#fff8;font:600 20px sans-serif;" +
         "background:linear-gradient(180deg,#7dd3fc 0%,#bae6fd 45%,#65a30d 46%,#3f6212 100%)";
-      el.textContent = `Ảnh giả lập (dev) – ${location.panoId}`;
+      el.textContent = `Chế độ dùng thử – không có ảnh thật. Nhập API key Google hoặc Mapillary để chơi thật.`;
       container.replaceChildren(el);
       callbacks.onHeading(location.heading);
       return {

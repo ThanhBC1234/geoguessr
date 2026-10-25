@@ -1,10 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// Relative base so the build works at any GitHub Pages path (e.g. /geoguessr/).
+// Source lives in src/ so the repository root can hold the built site
+// (GitHub Pages "Deploy from a branch" serves the root as-is).
 export default defineConfig({
+  root: "src",
+  publicDir: "../public",
   base: "./",
   plugins: [react()],
-  // Mapillary viewer is large but only loaded when that provider is used.
-  build: { chunkSizeWarningLimit: 1200 },
+  build: {
+    outDir: "../dist",
+    emptyOutDir: true,
+    // Mapillary viewer is large but only loaded when that provider is used.
+    chunkSizeWarningLimit: 1200,
+  },
 });

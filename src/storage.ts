@@ -33,10 +33,7 @@ function write(key: string, value: unknown) {
 }
 
 export function loadSettings(): Settings {
-  const settings = read(SETTINGS_KEY, DEFAULT_SETTINGS);
-  // The mock provider only exists in development builds.
-  if (settings.provider === "mock" && !import.meta.env.DEV) settings.provider = "google";
-  return settings;
+  return read(SETTINGS_KEY, DEFAULT_SETTINGS);
 }
 
 export const saveSettings = (s: Settings) => write(SETTINGS_KEY, s);

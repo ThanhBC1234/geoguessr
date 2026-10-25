@@ -31,7 +31,7 @@ const TIMES = [
 const PROVIDERS: { id: ProviderId; label: string }[] = [
   { id: "google", label: "Google Street View" },
   { id: "mapillary", label: "Mapillary" },
-  ...(import.meta.env.DEV ? [{ id: "mock" as const, label: "Giả lập (dev)" }] : []),
+  { id: "mock", label: "Dùng thử (không cần key)" },
 ];
 
 export function Home({ settings, stats, onChange, onPlay }: Props) {
@@ -55,7 +55,11 @@ export function Home({ settings, stats, onChange, onPlay }: Props) {
         >
           Chơi
         </button>
-        {!ready && <p className="home__warn">Nhập API key bên dưới để bắt đầu chơi.</p>}
+        {!ready && (
+          <p className="home__warn">
+            Nhập API key bên dưới, hoặc chọn <b>Dùng thử</b> để xem game chạy mà chưa cần key.
+          </p>
+        )}
         {needsReload && (
           <p className="home__warn">
             Bạn vừa đổi Google API key. <button type="button" className="link" onClick={() => window.location.reload()}>Tải lại trang</button> để dùng key mới.
@@ -154,6 +158,13 @@ export function Home({ settings, stats, onChange, onPlay }: Props) {
                 </ol>
               </details>
             </>
+          )}
+
+          {settings.provider === "mock" && (
+            <p className="field__hint" style={{ marginTop: 12 }}>
+              Chế độ này chỉ để xem giao diện và luồng chơi: ảnh đường phố được thay bằng nền vẽ, vị trí lấy từ danh
+              sách cố định. Để chơi thật, chọn Google Street View hoặc Mapillary và nhập key.
+            </p>
           )}
 
           {settings.provider === "mapillary" && (
