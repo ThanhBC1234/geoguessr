@@ -6,15 +6,18 @@ interface Props {
   provider: StreetProvider;
   location: GameLocation;
   mode: Mode;
+  onReady(): void;
   onError(err: unknown): void;
 }
 
-export function StreetView({ provider, location, mode, onError }: Props) {
+export function StreetView({ provider, location, mode, onReady, onError }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const handle = useRef<ViewerHandle | null>(null);
   const [heading, setHeading] = useState(location.heading);
   const onErrorRef = useRef(onError);
   onErrorRef.current = onError;
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
 
   useEffect(() => {
     const container = el.current;
@@ -23,8 +26,12 @@ export function StreetView({ provider, location, mode, onError }: Props) {
     provider
       .mount(container, location, mode, { onHeading: (h) => !cancelled && setHeading(h) })
       .then((h) => {
-        if (cancelled) h.destroy();
-        else handle.current = h;
+        if (cancelled) {
+          h.destroy();
+          return;
+        }
+        handle.current = h;
+        onReadyRef.current();
       })
       .catch((err) => !cancelled && onErrorRef.current(err));
     return () => {

@@ -355,6 +355,8 @@ select:focus, input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px r
   .timer { top: 64px; font-size: 20px; }
   .guess-map, .guess-map--s2, .guess-map--s3 { left: 12px; right: 12px; bottom: 12px; width: auto; }
   .guess-map__map { height: 150px; }
+  .guess-map__tools { opacity: 1; }
+  .guess-map--s2 .guess-map__map, .guess-map--s3 .guess-map__map { height: min(420px, calc(100vh - 200px)); }
   .street__controls { bottom: auto; top: 140px; }
   .round-result__score b { font-size: 32px; }
 }

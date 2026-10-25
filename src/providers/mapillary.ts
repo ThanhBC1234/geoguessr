@@ -36,7 +36,7 @@ async function searchImages(token: string, lat: number, lng: number, signal: Abo
     if ((err as Error).name === "AbortError") throw err;
     throw new ProviderError("network", "Không kết nối được Mapillary. Kiểm tra mạng.");
   }
-  if (res.status === 401 || res.status === 403) {
+  if (res.status === 400 || res.status === 401 || res.status === 403) {
     throw new ProviderError("auth", "Mapillary từ chối token. Kiểm tra lại Client Token.");
   }
   if (!res.ok) return [];

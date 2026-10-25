@@ -44,8 +44,9 @@ Khi chạy `npm run dev` sẽ có thêm nguồn ảnh **Giả lập (dev)** đ�
 Workflow `.github/workflows/deploy.yml` tự build và đăng game mỗi lần push. Chỉ cần bật một lần:
 
 1. Vào **Settings → Pages** của repo.
-2. Ở **Build and deployment → Source**, chọn **GitHub Actions**.
-3. Vào tab **Actions**, chạy lại workflow *Deploy to GitHub Pages* (hoặc push một commit mới).
+2. Ở **Build and deployment → Source**, chọn **GitHub Actions** (không chọn *Deploy from a branch*:
+   cách đó đăng thẳng mã nguồn chưa build nên trang sẽ trắng).
+3. Vào tab **Actions**, mở workflow *Deploy to GitHub Pages* → **Run workflow** (hoặc push một commit mới).
 
 Game sẽ có ở `https://<tên-tài-khoản>.github.io/<tên-repo>/`.
 

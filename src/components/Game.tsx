@@ -83,10 +83,8 @@ export function Game({ settings, onFinish, onQuit }: Props) {
     ensureLocation(round)
       ?.then((loc) => {
         if (stale) return;
+        // The round starts (and the clock) once the viewer reports it is ready.
         setLocation(loc);
-        setPhase("playing");
-        setTimeLeft(settings.timeLimit);
-        roundStart.current = performance.now();
         ensureLocation(round + 1);
       })
       .catch((err) => {
@@ -97,7 +95,13 @@ export function Game({ settings, onFinish, onQuit }: Props) {
     return () => {
       stale = true;
     };
-  }, [round, attempt, ensureLocation, fail, settings.timeLimit]);
+  }, [round, attempt, ensureLocation, fail]);
+
+  const onViewerReady = useCallback(() => {
+    roundStart.current = performance.now();
+    setTimeLeft(settings.timeLimit);
+    setPhase((p) => (p === "loading" ? "playing" : p));
+  }, [settings.timeLimit]);
 
   useEffect(() => {
     const onAuth = () =>
@@ -133,7 +137,10 @@ export function Game({ settings, onFinish, onQuit }: Props) {
     const id = window.setInterval(() => {
       const left = settings.timeLimit - (performance.now() - roundStart.current) / 1000;
       setTimeLeft(left);
-      if (left <= 0) submit();
+      if (left <= 0) {
+        window.clearInterval(id);
+        submit();
+      }
     }, 200);
     return () => window.clearInterval(id);
   }, [phase, settings.timeLimit, submit]);
@@ -162,8 +169,15 @@ export function Game({ settings, onFinish, onQuit }: Props) {
 
   return (
     <div className="game">
-      {location && (phase === "playing" || phase === "result") && (
-        <StreetView key={`view-${round}`} provider={provider} location={location} mode={settings.mode} onError={fail} />
+      {location && phase !== "error" && (
+        <StreetView
+          key={`view-${round}`}
+          provider={provider}
+          location={location}
+          mode={settings.mode}
+          onReady={onViewerReady}
+          onError={fail}
+        />
       )}
 
       <header className="hud">
